@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Tesla CAN Explorer</title>
+    <title>Tesla CAN 浏览器</title>
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <!-- Google tag (gtag.js) -->
@@ -22,27 +22,27 @@
 
     <header class="topbar">
       <div class="brand">
-        <div class="brand-kicker">Reverse Engineering Portal</div>
-        <h1>Tesla CAN Explorer</h1>
+        <div class="brand-kicker">逆向工程门户</div>
+        <h1>Tesla CAN 浏览器</h1>
         <p class="brand-sub" id="dataset-source-label">
-          Dataset source: Model 3 firmware <code>2026.2</code>
+          数据集来源：Model 3 固件 <code>2026.2</code>
         </p>
         <p class="brand-sub" id="dataset-libs-label">
-          Sources: <code>libQtCarCANData.so</code>,
+          来源：<code>libQtCarCANData.so</code>,
           <code>libQtCarVAPI.so</code>
         </p>
         <div class="sponsor-ad">
-          <span class="sponsor-label">AD</span>
+          <span class="sponsor-label">广告</span>
           <span class="sponsor-copy">
-            This research is open source on
+            本研究项目已在
             <a
               href="https://github.com/mikegapinski/tesla-can-explorer"
               target="_blank"
               rel="noopener noreferrer"
               >GitHub</a
             >
-            and sponsored by Tesla Android.
-            Want Android apps in your Tesla? Visit
+            开源，由 Tesla Android 赞助。
+            想在您的特斯拉中使用 Android 应用？请访问
             <a href="https://teslaandroid.com/" target="_blank" rel="noopener noreferrer"
               >teslaandroid.com</a
             >
@@ -51,19 +51,19 @@
       </div>
       <div class="stats" id="header-stats">
         <div class="stat">
-          <span class="stat-label">Frames</span>
+          <span class="stat-label">帧</span>
           <span class="stat-value" id="stat-frames">-</span>
         </div>
         <div class="stat">
-          <span class="stat-label">Signals</span>
+          <span class="stat-label">信号</span>
           <span class="stat-value" id="stat-signals">-</span>
         </div>
         <div class="stat">
-          <span class="stat-label">Enum Values</span>
+          <span class="stat-label">枚举值</span>
           <span class="stat-value" id="stat-values">-</span>
         </div>
         <div class="stat">
-          <span class="stat-label">VAPI Aliases</span>
+          <span class="stat-label">VAPI 别名</span>
           <span class="stat-value" id="stat-vapi">-</span>
         </div>
       </div>
@@ -72,37 +72,37 @@
     <main class="layout">
       <aside class="panel panel-left">
         <div class="panel-head">
-          <h2>Frames</h2>
-          <p id="frame-results">Loading...</p>
+          <h2>帧</h2>
+          <p id="frame-results">加载中...</p>
         </div>
 
         <div class="controls">
           <label class="field">
-            <span>Data Source</span>
+            <span>数据源</span>
             <select id="data-source"></select>
           </label>
 
           <label class="field">
-            <span>Global Search</span>
+            <span>全局搜索</span>
             <input
               id="global-search"
               type="search"
-              placeholder="frame, address, signal, enum label"
+              placeholder="帧、地址、信号、枚举标签"
               autocomplete="off"
             />
           </label>
 
           <div class="inline-fields">
             <label class="field">
-              <span>Bus</span>
+              <span>总线</span>
               <select id="bus-filter">
-                <option value="">All</option>
+                <option value="">全部</option>
               </select>
             </label>
             <label class="field">
-              <span>Module</span>
+              <span>模块</span>
               <select id="module-filter">
-                <option value="">All</option>
+                <option value="">全部</option>
               </select>
             </label>
           </div>
@@ -110,16 +110,16 @@
           <div class="inline-fields">
             <label class="field checkbox-field">
               <input id="enumerated-only" type="checkbox" />
-              <span>Has Enumerated Signals</span>
+              <span>包含枚举信号</span>
             </label>
             <label class="field">
-              <span>Sort</span>
+              <span>排序</span>
               <select id="sort-mode">
-                <option value="address">Address</option>
-                <option value="name">Name</option>
-                <option value="signals">Signal Count</option>
-                <option value="enums">Enumerated Count</option>
-                <option value="vapi">VAPI Alias Count</option>
+                <option value="address">地址</option>
+                <option value="name">名称</option>
+                <option value="signals">信号数量</option>
+                <option value="enums">枚举数量</option>
+                <option value="vapi">VAPI 别名数量</option>
               </select>
             </label>
           </div>
@@ -130,9 +130,9 @@
 
       <section class="panel panel-right">
         <div class="panel-head">
-          <h2 id="frame-title">Select a frame</h2>
+          <h2 id="frame-title">选择一个帧</h2>
           <p id="frame-subtitle">
-            Browse by frame address and signal values.
+            按帧地址和信号值浏览。
           </p>
         </div>
 
@@ -140,17 +140,17 @@
 
         <div class="signal-controls">
           <label class="field signal-search">
-            <span>Signal Search</span>
+            <span>信号搜索</span>
             <input
               id="signal-search"
               type="search"
-              placeholder="signal name, enum map, value label"
+              placeholder="信号名称、枚举映射、值标签"
               autocomplete="off"
               disabled
             />
           </label>
           <label class="field">
-            <span>Rows</span>
+            <span>行数</span>
             <select id="signal-page-size" disabled>
               <option value="100">100</option>
               <option value="200" selected>200</option>
@@ -162,7 +162,7 @@
         <div class="signal-pagination" id="signal-pagination"></div>
         <div class="signal-table-wrap" id="signal-table-wrap">
           <div class="empty-state">
-            Frame details will appear here after selection.
+            选择帧后，帧详情将显示在此处。
           </div>
         </div>
       </section>
@@ -171,7 +171,7 @@
     <footer class="site-footer">
       <div class="footer-line">
         <span class="footer-chip">
-          Copyright &copy; 2026 Michał Gapiński (<a
+          版权所有 &copy; 2026 Michał Gapiński (<a
             href="https://gapinski.eu"
             target="_blank"
             rel="noopener noreferrer"
@@ -196,14 +196,14 @@
         </span>
       </div>
       <div class="footer-disclaimer">
-        Independent project. Unaffiliated with and not endorsed by Tesla, Inc.
+        独立项目。与特斯拉公司（Tesla, Inc.）无关联，未获其认可。
       </div>
     </footer>
 
     <div id="loading-overlay" class="loading-overlay">
       <div class="loading-card">
-        <h3>Indexing CAN Data</h3>
-        <p id="loading-text">Loading JSON data...</p>
+        <h3>索引 CAN 数据</h3>
+        <p id="loading-text">加载 JSON 数据...</p>
       </div>
     </div>
 
@@ -212,9 +212,9 @@
         <table class="values-table">
           <thead>
             <tr>
-              <th>Value (Dec)</th>
-              <th>Value (Hex)</th>
-              <th>Label</th>
+              <th>值（十进制）</th>
+              <th>值（十六进制）</th>
+              <th>标签</th>
             </tr>
           </thead>
           <tbody></tbody>
