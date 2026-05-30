@@ -2,19 +2,19 @@
 
 const DATA_SOURCES = {
   mcu2: {
-    label: "Model 3 MCU2 (Intel)",
+    label: "Model 3 MCU2（Intel）",
     url: "./data/can_frames_decoded_all_values_mcu2.json",
   },
   mcu3: {
-    label: "Model 3 MCU3 (AMD)",
+    label: "Model 3 MCU3（AMD）",
     url: "./data/can_frames_decoded_all_values_mcu3.json",
   },
   modelsx_amd: {
-    label: "Model S/X MCU3 (AMD)",
+    label: "Model S/X MCU3（AMD）",
     url: "./data/can_frames_decoded_all_values_modelsx_amd.json",
   },
   modelsx_intel: {
-    label: "Model S/X MCU2 (Intel)",
+    label: "Model S/X MCU2（Intel）",
     url: "./data/can_frames_decoded_all_values_modelsx_intel.json",
   },
 };
@@ -120,7 +120,7 @@ function initSourceSelector(selection) {
   els.dataSource.value = selection.sourceKey;
 
   if (selection.isDataOverride) {
-    els.dataSource.title = "Disabled because a custom ?data= override is active.";
+    els.dataSource.title = "由于自定义 ?data= 参数处于活动状态，此选项已禁用。";
     els.dataSource.disabled = true;
   }
 }
@@ -151,10 +151,10 @@ function getModuleName(frameName) {
 async function loadPayload() {
   const selection = state.dataSelection || getSelectionFromQuery();
   const url = selection.dataUrl;
-  setLoading(`Loading ${url}`);
+  setLoading(`加载中 ${url}`);
   const response = await fetch(url);
   if (!response.ok) {
-    throw new Error(`Failed to load ${url}: HTTP ${response.status}`);
+    throw new Error(`加载失败 ${url}: HTTP ${response.status}`);
   }
   return response.json();
 }
@@ -227,7 +227,7 @@ async function indexFrames(frames) {
     state.frameByKey.set(key, frame);
 
     if (i % 20 === 0) {
-      setLoading(`Indexing frames ${i + 1}/${frames.length}`);
+      setLoading(`索引帧 ${i + 1}/${frames.length}`);
       await new Promise((resolve) => setTimeout(resolve, 0));
     }
   }
@@ -350,8 +350,8 @@ function ensureSelectedFrame() {
 function renderFrameList() {
   if (!state.filteredFrames.length) {
     els.frameList.innerHTML =
-      '<div class="empty-state">No frames match your filters.</div>';
-    els.frameResults.textContent = "0 frames";
+      '<div class="empty-state">没有符合您筛选条件的帧。</div>';
+    els.frameResults.textContent = "0 帧";
     return;
   }
 
@@ -365,10 +365,10 @@ function renderFrameList() {
             <div class="frame-addr">${escapeHtml(frame.address_hex)}</div>
           </div>
           <div class="frame-meta">
-            <span class="meta-pill">Bus ${escapeHtml(frame.bus_name)} (${escapeHtml(frame.bus_id)})</span>
+            <span class="meta-pill">总线 ${escapeHtml(frame.bus_name)}（${escapeHtml(frame.bus_id)}）</span>
             <span class="meta-pill">${escapeHtml(frame.__module)}</span>
-            <span class="meta-pill">${formatNum(frame.__signalCount)} signals</span>
-            <span class="meta-pill">${formatNum(frame.__enumeratedSignalCount)} enum</span>
+            <span class="meta-pill">${formatNum(frame.__signalCount)} 信号</span>
+            <span class="meta-pill">${formatNum(frame.__enumeratedSignalCount)} 枚举</span>
             <span class="meta-pill">${formatNum(frame.__vapiAliasCount)} VAPI</span>
           </div>
         </article>
@@ -377,7 +377,7 @@ function renderFrameList() {
     .join("");
 
   els.frameList.innerHTML = html;
-  els.frameResults.textContent = `${formatNum(state.filteredFrames.length)} frames`;
+  els.frameResults.textContent = `${formatNum(state.filteredFrames.length)} 帧`;
 }
 
 function getSelectedFrame() {
@@ -413,13 +413,13 @@ function filterSignals(signals, query) {
 function renderFrameDetail() {
   const frame = getSelectedFrame();
   if (!frame) {
-    els.frameTitle.textContent = "Select a frame";
+    els.frameTitle.textContent = "选择一个帧";
     els.frameSubtitle.textContent =
-      "Browse by frame address and signal values.";
+      "按帧地址和信号值浏览。";
     els.frameMeta.innerHTML = "";
     els.signalPagination.innerHTML = "";
     els.signalTableWrap.innerHTML =
-      '<div class="empty-state">Frame details will appear here after selection.</div>';
+      '<div class="empty-state">选择帧后，帧详情将显示在此处。</div>';
     els.signalSearch.disabled = true;
     els.signalPageSize.disabled = true;
     return;
@@ -427,15 +427,15 @@ function renderFrameDetail() {
 
   els.signalSearch.disabled = false;
   els.signalPageSize.disabled = false;
-  els.frameTitle.textContent = `${frame.frame_name} (${frame.address_hex})`;
-  els.frameSubtitle.textContent = `Address ${frame.address_dec} on ${frame.bus_name} bus`;
+  els.frameTitle.textContent = `${frame.frame_name}（${frame.address_hex}）`;
+  els.frameSubtitle.textContent = `地址 ${frame.address_dec} 在 ${frame.bus_name} 总线上`;
   els.frameMeta.innerHTML = [
-    `<span class="chip">Bus: <code>${escapeHtml(frame.bus_name)}</code> (${escapeHtml(frame.bus_id)})</span>`,
-    `<span class="chip">Module: <code>${escapeHtml(frame.__module)}</code></span>`,
-    `<span class="chip">Signals: <code>${formatNum(frame.__signalCount)}</code></span>`,
-    `<span class="chip">Enumerated: <code>${formatNum(frame.__enumeratedSignalCount)}</code></span>`,
-    `<span class="chip">Enum Values: <code>${formatNum(frame.__valueCount)}</code></span>`,
-    `<span class="chip">VAPI Aliases: <code>${formatNum(frame.__vapiAliasCount)}</code></span>`,
+    `<span class="chip">总线：<code>${escapeHtml(frame.bus_name)}</code>（${escapeHtml(frame.bus_id)}）</span>`,
+    `<span class="chip">模块：<code>${escapeHtml(frame.__module)}</code></span>`,
+    `<span class="chip">信号：<code>${formatNum(frame.__signalCount)}</code></span>`,
+    `<span class="chip">枚举：<code>${formatNum(frame.__enumeratedSignalCount)}</code></span>`,
+    `<span class="chip">枚举值：<code>${formatNum(frame.__valueCount)}</code></span>`,
+    `<span class="chip">VAPI 别名：<code>${formatNum(frame.__vapiAliasCount)}</code></span>`,
   ].join("");
 
   const filteredSignals = filterSignals(frame.__signals, state.signalQuery);
@@ -457,13 +457,13 @@ function renderSignalPagination(total, totalPages, start, end) {
   const startNum = total === 0 ? 0 : start + 1;
   const endNum = total === 0 ? 0 : end;
   els.signalPagination.innerHTML = `
-    <div>Showing ${formatNum(startNum)}-${formatNum(endNum)} of ${formatNum(total)} signals</div>
+    <div>显示 ${formatNum(startNum)}-${formatNum(endNum)} / 共 ${formatNum(total)} 信号</div>
     <div class="pager-buttons">
-      <button type="button" data-page="first" ${state.signalPage === 1 ? "disabled" : ""}>First</button>
-      <button type="button" data-page="prev" ${state.signalPage === 1 ? "disabled" : ""}>Prev</button>
-      <span>Page ${formatNum(state.signalPage)} / ${formatNum(totalPages)}</span>
-      <button type="button" data-page="next" ${state.signalPage >= totalPages ? "disabled" : ""}>Next</button>
-      <button type="button" data-page="last" ${state.signalPage >= totalPages ? "disabled" : ""}>Last</button>
+      <button type="button" data-page="first" ${state.signalPage === 1 ? "disabled" : ""}>首页</button>
+      <button type="button" data-page="prev" ${state.signalPage === 1 ? "disabled" : ""}>上一页</button>
+      <span>第 ${formatNum(state.signalPage)} / ${formatNum(totalPages)} 页</span>
+      <button type="button" data-page="next" ${state.signalPage >= totalPages ? "disabled" : ""}>下一页</button>
+      <button type="button" data-page="last" ${state.signalPage >= totalPages ? "disabled" : ""}>末页</button>
     </div>
   `;
 }
@@ -471,7 +471,7 @@ function renderSignalPagination(total, totalPages, start, end) {
 function renderSignalTable(frame, signals) {
   if (!signals.length) {
     els.signalTableWrap.innerHTML =
-      '<div class="empty-state">No signals match the current filter.</div>';
+      '<div class="empty-state">没有符合当前筛选条件的信号。</div>';
     return;
   }
 
@@ -513,11 +513,11 @@ function renderSignalTable(frame, signals) {
       <thead>
         <tr>
           <th>#</th>
-          <th>Signal Name</th>
-          <th>Enum Map</th>
-          <th>VAPI Alias</th>
-          <th>Value Count</th>
-          <th>Notes</th>
+          <th>信号名称</th>
+          <th>枚举映射</th>
+          <th>VAPI 别名</th>
+          <th>值数量</th>
+          <th>注释</th>
         </tr>
       </thead>
       <tbody>${rows.join("")}</tbody>
@@ -527,7 +527,7 @@ function renderSignalTable(frame, signals) {
 
 function renderValuesTable(values) {
   if (!values.length) {
-    return '<div class="empty-state">No discrete values decoded for this signal.</div>';
+    return '<div class="empty-state">此信号没有解码的离散值。</div>';
   }
   const rowHtml = values
     .map(
@@ -546,9 +546,9 @@ function renderValuesTable(values) {
       <table class="values-table">
         <thead>
           <tr>
-            <th>Value (Dec)</th>
-            <th>Value (Hex)</th>
-            <th>Label</th>
+            <th>值（十进制）</th>
+            <th>值（十六进制）</th>
+            <th>标签</th>
           </tr>
         </thead>
         <tbody>${rowHtml}</tbody>
@@ -685,8 +685,8 @@ async function init() {
       const mcu = escapeHtml(payload.dataset_source.mcu || "");
       const soc = escapeHtml(payload.dataset_source.soc || "");
       const hw = `${mcu} ${soc}`.trim();
-      const hwText = hw ? ` (${hw})` : "";
-      els.datasetSourceLabel.innerHTML = `Dataset source: ${vehicle} firmware <code>${firmware}</code>${hwText}`;
+      const hwText = hw ? `（${hw}）` : "";
+      els.datasetSourceLabel.innerHTML = `数据集来源：${vehicle} 固件 <code>${firmware}</code>${hwText}`;
     }
     if (els.datasetLibsLabel) {
       const libs = ["libQtCarCANData.so"];
@@ -701,13 +701,13 @@ async function init() {
       }
       const unique = [...new Set(libs)].filter(Boolean);
       if (unique.length > 0) {
-        els.datasetLibsLabel.innerHTML = `Sources: ${unique
+        els.datasetLibsLabel.innerHTML = `来源：${unique
           .map((lib) => `<code>${escapeHtml(lib)}</code>`)
-          .join(", ")}`;
+          .join("，")}`;
       }
     }
 
-    setLoading("Building search index...");
+    setLoading("构建搜索索引...");
     const { totalSignals, totalValues, totalVapiAliases, buses, modules } = await indexFrames(
       state.frames
     );
@@ -735,7 +735,7 @@ async function init() {
   } catch (error) {
     console.error(error);
     showFatalError(
-      `Failed to load data. Start a local web server in this portal directory and open /. Error: ${String(
+      `加载数据失败。请在此门户目录中启动本地 Web 服务器并打开 /。错误：${String(
         error.message || error
       )}`
     );
